@@ -1,44 +1,37 @@
-# SvelteKit
+To use:
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte), deployed to [Vercel](https://vercel.com).
 
-## Deploy Your Own
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fvercel%2Ftree%2Fmain%2Fexamples%2Fsveltekit&project-name=sveltekit-vercel&repository-name=sveltekit-vercel&demo-title=SvelteKit%20%2B%20Vercel&demo-description=A%20SvelteKit%20app%20optimized%20Edge-first.&demo-url=https%3A%2F%2Fsveltekit-template.vercel.app%2F)
+1) `npm i -D vite-plugin-iso-import` in the bash
+ 
+2) change `svelte.config.js`
+```js
+import { isoImport } from 'vite-plugin-iso-import'
 
-_Live Example: https://sveltekit-template.vercel.app_
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm init svelte@next
-
-# create a new project in my-app
-npm init svelte@next my-app
+{kit:
+	vite: {plugins: [isoImport()]}}}
 ```
 
-> Note: the `@next` is temporary
+3) `import {Chart, Serie} from "svelte-apex?client"` note the `?client`
 
-## Developing
+4) 
+```js
+<script>
+	import { onMount } from "svelte";
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+	let clientside = false;
 
-```bash
-npm run dev
+	onMount(() => {
+		clientside = true;
+	});
+</script>
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+{#if clientside}
+	<Chart>
+		<Serie name="People" y={[5, 32, 15, 26, 42, 25, 14, 5, 19]} />
+	</Chart>
+{/if}
 ```
 
-## Building
 
-This uses the adapter-auto for SvelteKit, which detects Vercel and runs adapter-vercel on your behalf.
-
-```bash
-npm run build
-```
-
-> You can preview the built app with `npm run preview`, regardless of whether you installed an adapter. This should _not_ be used to serve your app in production.
+see here for more details https://stackoverflow.com/questions/69874742/sveltekit-console-error-window-is-not-defined-when-i-import-library
